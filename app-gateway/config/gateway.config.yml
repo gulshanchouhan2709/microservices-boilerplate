@@ -1,0 +1,108 @@
+http:
+  port: 8080
+admin:
+  port: 9876
+  host: localhost
+apiEndpoints:
+  auth:
+    host: localhost
+    paths:
+      - "/v1/auth"
+      - "/v1/auth/*"
+  customer:
+    host: localhost
+    paths:
+      - "/v1/customer"
+      - "/v1/customer/*"
+  nfts:
+    host: localhost
+    paths:
+      - "/v1/nfts"
+      - "/v1/nfts/*"
+  rewards:
+    host: localhost
+    paths:
+      - "/v1/rewards"
+      - "/v1/rewards/*"
+  analytics:
+    host: localhost
+    paths:
+      - "/v1/analytics"
+      - "/v1/analytics/*"
+  notification:
+    host: localhost
+    paths:
+      - "/v1/notification"
+      - "/v1/notification/*"
+serviceEndpoints:
+  auth:
+    url: "http://localhost:5001"
+  customer:
+    url: "http://localhost:5002"
+  nfts:
+    url: "http://localhost:5003"
+  rewards:
+    url: "http://localhost:5004"
+  analytics:
+    url: "http://localhost:5005"
+  notification:
+    url: "http://localhost:5006"
+policies:
+  - basic-auth
+  - cors
+  - expression
+  - key-auth
+  - log
+  - oauth2
+  - proxy
+  - rate-limit
+
+pipelines:
+  auth:
+    apiEndpoints:
+      - auth
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: auth
+              changeOrigin: true
+  customer:
+    apiEndpoints:
+      - customer
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: customer
+              changeOrigin: true
+  nfts:
+    apiEndpoints:
+      - nfts
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: nfts
+              changeOrigin: true
+  rewards:
+    apiEndpoints:
+      - rewards
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: rewards
+              changeOrigin: true
+  analytics:
+    apiEndpoints:
+      - analytics
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: analytics
+              changeOrigin: true
+  notification:
+    apiEndpoints:
+      - notification
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: notification
+              changeOrigin: true

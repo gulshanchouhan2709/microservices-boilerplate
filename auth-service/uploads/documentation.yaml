@@ -1,0 +1,576 @@
+swagger: '2.0'
+info:
+  description: ''
+  version: 1.0.0
+  title: Blockchain API Reference - InfoBeans
+  termsOfService: https://www.infobeans.com/privacy-policy/
+  contact:
+    email: info@infobeans.com
+host: localhost:8080
+basePath: "/v1"
+tags:
+- name: Introduction
+  description: 'InfoBeans offers a flexible documentations to build, run, and scale blockchain apps fast. To learn more about the InfoBeans blockchain development framework, [visit our website](https://www.infobeans.com/). The APIs features powerful endpoints that simplify a complex blockchain into single API requests.'
+- name: Overview
+  description: 'The Web3 Data APIs are a set of highly scalable APIs that solve popular Web3 challenges. By indexing blockchain data in a structured way, We are able to expose APIs that make querying, fetching and understanding this data a breeze for developers.'
+- name: Cross-Origin Resource Sharing
+  description: 'This API features Cross-Origin Resource Sharing (CORS) implemented in compliance with [W3C spec](https://fetch.spec.whatwg.org/). And that allows cross-domain communication from the browser. All responses have a wildcard same-origin which makes them completely public and accessible to everyone, including any code on any site.'
+- name: Get Your API Key
+  description: 'To obtain the API key, [Go to the account](https://clientadmin.azurewebsites.net/). The API key represents all your APIs calls so keep it safe!'
+- name: Account
+  description: 'The API uses API keys to authenticate the requests. Your API keys carry many privileges, so be sure to keep them secure! Do not share your API keys in publicly accessible areas such as GitHub, client-side code, and so forth. Authentication to the API is performed via API Keys. Provide your API key as an X-API-Key header:'
+- name: Wallet API
+  description: 'Allow developers to interact with cryptocurrency wallets and perform various operations. It`s also provide a standardized and secure way to interact with wallets, abstracting the underlying complexities of blockchain protocols.'
+- name: NFT API
+  description: 'Allow developers to create, manage, and trade NFTs on blockchain networks that support them, such as Ethereum. These APIs enable various operations related to NFTs, including create collection, minting (creating) new NFTs, burn an NFTs, transferring ownership of NFTs/Gift NFTs, querying the metadata and details of existing NFTs.'
+- name: IPFS
+  description: 'IPFS is a distributed file storage. You can store data to IPFS and read from them.'
+- name: Transaction API
+  description: 'Allow developers to query transactions on blockchain networks.'
+- name: Block API
+  description: 'Allow developers to retrieve details about specific blocks, such as the block number, timestamp, list of transactions, previous block hash, and other relevant metadata.'
+- name: Service Utils
+  description: 'Allow developers to get a API version, freeze and unfreeze API key of an given account.'
+schemes:
+- https
+- http
+paths:
+  "/account/create":
+    post:
+      tags:
+      - Account
+      summary: Create New Account
+      description: 'To obtain the API key, [create a new account](https://clientadmin.azurewebsites.net/). Once you are logged in, you will get api key.'
+      operationId: createAccount
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: fullname
+        in: formData
+        description: Enter the full name.
+        required: true
+        type: string
+      - name: email
+        in: formData
+        description: Enter the valid and unique email address.
+        required: true
+        type: string
+      - name: password
+        in: formData
+        description: Enter the strong password (Atleast 8 characters required.)
+        required: true
+        type: string
+      - name: mobileno
+        in: formData
+        description: Enter the valid Mobile Number.
+        required: true
+        type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            "$ref": "#/definitions/ApiResponse"
+  "/account/getDetails":
+    get:
+      tags:
+      - Account
+      summary: Get Account details
+      description: Displays all information regarding the given account.
+      operationId: getAccountDetails
+      x-codeSamples:
+        - lang: 'cURL'
+          label: 'CLI'
+          source: |
+            curl --request POST \
+            --url 'https://data.apiexample.com/api/example/batch_query/json?format=json' \
+            --header 'content-type: application/octet-stream: ' \
+            --data '{}'
+      produces:
+      - application/json
+      parameters:
+      - name: secretKey
+        in: formData
+        description: Enter the secret key..
+        required: true
+        type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              "$ref": "#/definitions/Pet"
+        '400':
+          description: Invalid
+      security:
+      - X-API-Key: []
+  "/account/update":
+    put:
+      tags:
+      - Account
+      summary: Update an Account
+      description: Update the information regarding the given account.
+      operationId: updateAccountDetails
+      produces:
+      - application/json
+      parameters:
+      - name: secretKey
+        in: formData
+        description: Enter the secret key..
+        required: true
+        type: string
+      - name: fullname
+        in: formData
+        description: Enter the full name.
+        required: true
+        type: string
+      - name: mobileno
+        in: formData
+        description: Enter the valid Mobile Number.
+        required: true
+        type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              "$ref": "#/definitions/Pet"
+        '400':
+          description: Invalid data
+      security:
+      - X-API-Key: []
+      deprecated: true
+  "/account/password/update":
+    post:
+      tags:
+      - Account
+      summary: Update/Change Account Password
+      description: Update the password regarding the given account.
+      operationId: updateAccountPassword
+      produces:
+      - application/json
+      parameters:
+      - name: secretKey
+        in: formData
+        description: Enter the secret key..
+        required: true
+        type: string
+      - name: oldPassword
+        in: formData
+        description: Enter the Old/Current Password.
+        required: true
+        type: string
+      - name: newPassword
+        in: formData
+        description: Enter the new password.
+        required: true
+        type: string
+      - name: confirmPassword
+        in: formData
+        description: Enter the confirm password.
+        required: true
+        type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              "$ref": "#/definitions/Pet"
+        '400':
+          description: Invalid data
+      security:
+      - X-API-Key: []
+  "/account/activate":
+    post:
+      tags:
+      - Account
+      summary: Activate Account
+      description: Activates an given account.
+      operationId: activateAccount
+      produces:
+      - application/json
+      parameters:
+      - name: secretKey
+        in: formData
+        description: Enter the secret key..
+        required: true
+        type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            "$ref": "#/definitions/Pet"
+        '400':
+          description: Invalid data supplied
+        '404':
+          description: Account not found
+      security:
+      - X-API-Key: []
+  "/account/deactivate":
+    post:
+      tags:
+      - Account
+      summary: Deactivate Account
+      description: Deactivates an given account.
+      operationId: deactivateAccount
+      produces:
+      - application/json
+      parameters:
+      - name: secretKey
+        in: formData
+        description: Enter the secret key..
+        required: true
+        type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            "$ref": "#/definitions/Pet"
+        '400':
+          description: Invalid data supplied
+        '404':
+          description: Account not found
+      security:
+      - X-API-Key: []
+  "/account/delete":
+    delete:
+      tags:
+      - Account
+      summary: Delete Account
+      description: Delele an given account.
+      operationId: deleteAccount
+      produces:
+      - application/json
+      parameters:
+      - name: secretKey
+        in: formData
+        description: Enter the secret key..
+        required: true
+        type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            "$ref": "#/definitions/Pet"
+        '400':
+          description: Invalid data supplied
+        '404':
+          description: Account not found
+      security:
+      - X-API-Key: []
+  "/wallets/import":
+    post:
+      tags:
+      - Wallet API
+      summary: Import wallet
+      description: Import your metamask wallet to perform blockchain transaction.
+      operationId: importWallet
+      produces:
+      - application/json
+      security:
+      - X-API-Key: []
+  "/wallets/balance/:address":
+    get:
+      tags:
+      - Wallet API
+      summary: Get native balance of wallet address
+      description: Get the native balance of an wallet address.
+      operationId: nativeBalanceUsingWallet
+      produces:
+      - application/json
+      security:
+      - X-API-Key: []
+  "/wallets/chains/:address":
+    get:
+      tags:
+      - Wallet API
+      summary: Get chain activity by wallet
+      description: Get the active chains for a wallet address.
+      operationId: chainActivityUsingWallet
+      produces:
+      - application/json
+      security:
+      - X-API-Key: []
+  "/wallets/transactions/:address":
+    get:
+      tags:
+      - Wallet API
+      summary: Get native transactions by wallet
+      description: Get native transactions ordered by block number in descending order.
+      operationId: nativeTransactionUsingWallet
+      produces:
+      - application/json
+      security:
+      - X-API-Key: []
+  "/nfts/collection/create":
+    post:
+      tags:
+      - NFT API
+      summary: Create Collection
+      description: helps you to create collection.
+      operationId: createCollection
+      produces:
+      - application/json
+      security:
+      - X-API-Key: []
+  "/nfts/mint/add":
+    post:
+      tags:
+      - NFT API
+      summary: Mint an NFT
+      description: helps you mint NFTs easier than minting natively on a blockchain.
+      operationId: mintNFT
+      produces:
+      - application/json
+      security:
+      - X-API-Key: []
+  "/nfts/tranfer":
+    post:
+      tags:
+      - NFT API
+      summary: Transfer an NFT
+      description: helps you to transfer one NFT at a time.
+      operationId: transferAnNFT
+      produces:
+      - application/json
+      security:
+      - X-API-Key: []
+  "/nfts/burn":
+    post:
+      tags:
+      - NFT API
+      summary: Burn an NFT
+      description: helps you to destroy an NFT. Burning the NFT transfers it to an un-spendable blockchain address that no one can access.
+      operationId: burnAnNFT
+      produces:
+      - application/json
+      security:
+      - X-API-Key: []
+  "/nfts/mint/batch":
+    post:
+      tags:
+      - NFT API
+      summary: Mint multiple NFTs
+      description: helps you to create/mint multiple nfts token.
+      operationId: mintMultipleNFTs
+      produces:
+      - application/json
+      security:
+      - X-API-Key: []
+  "/nfts/collection/:chain/:address":
+    get:
+      tags:
+      - NFT API
+      summary: Get all NFTs from a collection
+      description: helps you to get all NFTs from a collection.
+      operationId: getNFTsFromCollection
+      produces:
+      - application/json
+      security:
+      - X-API-Key: []
+  "/nfts/metadata/:chain/:contractAddress/:tokenId":
+    get:
+      tags:
+      - NFT API
+      summary: Get NFT metadata
+      description: helps you to get metadata of an NFT.
+      operationId: getNFTsFromCollection
+      produces:
+      - application/json
+      security:
+      - X-API-Key: []
+  "/nfts/ipfs/:id":
+    get:
+      tags:
+      - IPFS
+      summary: Get file from IPFS
+      description: helps you to get data from the IPFS..
+      operationId: getDataFromIPFS
+      produces:
+      - application/json
+      security:
+      - X-API-Key: []
+  "/nfts/ipfs/:chain/:contractAddress/:tokenId":
+    post:
+      tags:
+      - IPFS
+      summary: Store data to IPFS
+      description: helps you to stores file on the IPFS..
+      operationId: storeDataAtIPFS
+      produces:
+      - application/json
+      security:
+      - X-API-Key: []
+  "/nfts/transaction/:chain/:hash":
+    get:
+      tags:
+      - Transaction API
+      summary: Get transaction by hash
+      description: helps you to get the contents of a transaction by the given transaction hash.
+      operationId: transactionByHash
+      produces:
+      - application/json
+      security:
+      - X-API-Key: []
+  "/nfts/block/:chain/:blockNumberOrHash":
+    get:
+      tags:
+      - Block API
+      summary: Get block by hash
+      description: helps you to get the contents of a block given the block hash..
+      operationId: blockByHash
+      produces:
+      - application/json
+      security:
+      - X-API-Key: []
+  "/nfts/block/:chain/:blockDate":
+    get:
+      tags:
+      - Block API
+      summary: Get transaction by date
+      description: helps you to get block by date.
+      operationId: blockByDate
+      produces:
+      - application/json
+      security:
+      - X-API-Key: []
+securityDefinitions:
+  X-API-Key:
+    type: apiKey
+    name: X-API-Key
+    in: header
+  petstore_auth:
+    type: oauth2
+    authorizationUrl: https://petstore.swagger.io/oauth/authorize
+    flow: implicit
+    scopes:
+      read:pets: read your pets
+      write:pets: modify pets in your account
+definitions:
+  ApiResponse:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      type:
+        type: string
+      message:
+        type: string
+  Category:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+    xml:
+      name: Category
+  Pet:
+    type: object
+    required:
+    - name
+    - photoUrls
+    properties:
+      id:
+        type: integer
+        format: int64
+      category:
+        "$ref": "#/definitions/Category"
+      name:
+        type: string
+        example: doggie
+      photoUrls:
+        type: array
+        xml:
+          wrapped: true
+        items:
+          type: string
+          xml:
+            name: photoUrl
+      tags:
+        type: array
+        xml:
+          wrapped: true
+        items:
+          xml:
+            name: tag
+          "$ref": "#/definitions/Tag"
+      status:
+        type: string
+        description: pet status in the store
+        enum:
+        - available
+        - pending
+        - sold
+    xml:
+      name: Pet
+  Tag:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+    xml:
+      name: Tag
+  Order:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      petId:
+        type: integer
+        format: int64
+      quantity:
+        type: integer
+        format: int32
+      shipDate:
+        type: string
+        format: date-time
+      status:
+        type: string
+        description: Order Status
+        enum:
+        - placed
+        - approved
+        - delivered
+      complete:
+        type: boolean
+    xml:
+      name: Order
+  User:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      username:
+        type: string
+      firstName:
+        type: string
+      lastName:
+        type: string
+      email:
+        type: string
+      password:
+        type: string
+      phone:
+        type: string
+      userStatus:
+        type: integer
+        format: int32
+        description: User Status
+    xml:
+      name: User
+externalDocs:
+  title: test
+  description: Find out more about Swagger
+  url: http://swagger.io
